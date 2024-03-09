@@ -1,0 +1,40 @@
+const int TIPKA= 3;  // Povezivanje tipke sa pinom
+const int Debouncing = 50;  // Vrijeme za debouncing u milisekundama
+
+int ZadnjeStanje = LOW;  // Zadnje stanje tipke
+int Stanje = LOW;  // Trenutno stanje tipke
+unsigned long ZadnjiDebouncing = 0;  // Zadnje vrijeme debouncinga
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(TIPKA, INPUT);
+}
+
+void loop() {
+  int reading = digitalRead(TIPKA);
+
+  // Provjeri je li se stanje promijenilo
+  if (reading != ZadnjeStanje) {
+    ZadnjiDebouncing = millis();  // Zapamti trenutno vrijeme
+  }
+
+  // Provjeri je li prošlo dovoljno vremena za debouncing
+  if ((millis() - ZadnjiDebouncing) > Debouncing) {
+    // Ako je došlo do promjene stanja tipke, a debouncing je završen
+    if (reading != Stanje) {
+      Stanje = reading;
+
+      // Ako je tipka pritisnuta
+      if (Stanje == HIGH) {
+        unsigned long TrajanjePritiska = pulseIn(TIPKA, HIGH, 5000000);  // Čekaj do 5 sekundi (5000000 mikrosekundi) ili dok tipka nije otpuštena
+
+        Serial.print("Trajanje pritiska: ");
+        Serial.print(TrajanjePritiska);
+        Serial.println(" us");
+      }
+    }
+  }
+
+  // Ažuriraj zadnje stanje tipke
+  ZadnjeStanje = reading;
+}
