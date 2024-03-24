@@ -19,7 +19,6 @@ class MinimalPublisherSubscriber(Node):
     def timer_callback(self):
         msg = String()
         msg.data = '%d' % self.i
-        self.publisher_.publish(msg)
         self.get_logger().info('Objavljeno: "%s"' % msg.data)
         self.i += 1
 
@@ -27,7 +26,10 @@ class MinimalPublisherSubscriber(Node):
         received_number = int(msg.data)  # Pretvara primljenu poruku u broj
         square = received_number ** 2     # Računa kvadrat primljenog broja
         self.get_logger().info('Primljeno: "%d", Kvadrat: "%d"' % (received_number, square))
-
+        square1 = String()
+        square1.data = '%d' % square
+        self.publisher_.publish(square1)
+        
 def main(args=None):
     rclpy.init(args=args)
     minimal_publisher_subscriber = MinimalPublisherSubscriber()
