@@ -12,7 +12,7 @@ class MinimalPublisherSubscriber(Node):
             self.listener_callback,
             10
         )
-        self.subscription  # spriječava upozorenje o nekorišćenoj varijabli
+        self.subscription  
         self.timer = self.create_timer(0.5, self.timer_callback)
         self.i = 0
 
@@ -23,8 +23,8 @@ class MinimalPublisherSubscriber(Node):
         self.i += 1
 
     def listener_callback(self, msg):
-        received_number = int(msg.data)  # Pretvara primljenu poruku u broj
-        square = received_number ** 2     # Računa kvadrat primljenog broja
+        received_number = int(msg.data) 
+        square = received_number ** 2     
         self.get_logger().info('Primljeno: "%d", Kvadrat: "%d"' % (received_number, square))
         square1 = String()
         square1.data = '%d' % square
@@ -34,9 +34,7 @@ def main(args=None):
     rclpy.init(args=args)
     minimal_publisher_subscriber = MinimalPublisherSubscriber()
     rclpy.spin(minimal_publisher_subscriber)
-    # Eksplicitno uništavanje čvora
-    # (opciono - inače će se automatski uništiti
-    # kada sakupljač smeća uništi objekat čvora)
+    
     minimal_publisher_subscriber.destroy_node()
     rclpy.shutdown()
 
