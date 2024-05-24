@@ -63,8 +63,8 @@ class Bug2(Node):
         return math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2)
 
     def is_on_line(self):
-        goal_vec = [self.goal_x - 0.0, self.goal_y - 0.0]
-        pos_vec = [self.current_x - 0.0, self.current_y - 0.0]
+        goal_vec = [self.goal_x - self.initial_position.x, self.goal_y - self.initial_position.y]
+        pos_vec = [self.current_x - self.initial_position.x, self.current_y - self.initial_position.y]
         cross_product = goal_vec[0] * pos_vec[1] - goal_vec[1] * pos_vec[0]
         return abs(cross_product) < 0.01  # Smanjen prag za detekciju odstupanja
 
